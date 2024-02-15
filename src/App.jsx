@@ -12,11 +12,15 @@ export default function App() {
     setItems((items) => [...items, item])
   }
 
+  function handleDeleteItems(id) {
+    setItems(items => items.filter(item => item.id !== id))
+  }
+
   return(
     <div className="app h-screen w-screen bg-gradient-to-r from-blue-200 to-cyan-200">
       <Logo />
-      <Form onAddItems={handleAddItems}/>
-      <PackingList items={items}/>
+      <Form onAddItems={handleAddItems} />
+      <PackingList items={items} onDeleteItem={handleDeleteItems}/>
       <Stats />
     </div>
   )
@@ -64,12 +68,12 @@ function Form({ onAddItems }) {
 }
 
 
-function PackingList({ items }) {
+function PackingList({ items, onDeleteItem }) {
   return(
     <div className='flex justify-center mt-4'>
       <ul className='flex flex-row space-x-8'>
         {items.map((item) => (
-          <Item item={item} key={item.id} />
+          <Item item={item} key={item.id} onDeleteItem={onDeleteItem}/>
         ))}
       </ul>
     </div>
@@ -77,13 +81,13 @@ function PackingList({ items }) {
 }
 
 
-function Item({ item }) {
+function Item({ item, onDeleteItem }) {
   return (
     <li className='flex items-center space-x-3 backdrop-blur-0 bg-yellow-200/30 px-3 py-3 rounded-xl text-lg'>
       <span style={item.packed ? {textDecoration: 'line-through'} : {}}>
         {item.quantity} {item.description}
       </span>
-      <button><Trash2 color="#ff0000" size={20}/></button>
+      <button onClick={() => onDeleteItem(item.id)}><Trash2 color="#ff0000" size={20}/></button>
     </li>
   )
 }
