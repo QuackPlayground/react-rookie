@@ -20,11 +20,16 @@ export default function App() {
     setItems(items => items.map(item => item.id === id ? {...item, packed: !item.packed} : item))
   }
 
+  function handleClearList() {
+    const confirmed = window.confirm('Are you sure you want to delete all items?')
+    if(confirmed) setItems([]);
+  }
+
   return(
     <div className="app h-screen w-screen bg-gradient-to-r from-blue-200 to-cyan-200">
       <Logo />
       <Form onAddItems={handleAddItems} />
-      <PackingList items={items} onDeleteItem={handleDeleteItems} onToggleItem={handleToggleItem}/>
+      <PackingList items={items} onDeleteItem={handleDeleteItems} onToggleItem={handleToggleItem} onClearList={handleClearList}/>
       <Stats items={items}/>
     </div>
   )
@@ -74,7 +79,7 @@ function Form({ onAddItems }) {
 }
 
 
-function PackingList({ items, onDeleteItem, onToggleItem }) {
+function PackingList({ items, onDeleteItem, onToggleItem, onClearList }) {
 
   const [sortBy, setSortBy] = useState('input');
 
@@ -87,7 +92,7 @@ function PackingList({ items, onDeleteItem, onToggleItem }) {
   if (sortBy === 'packed') sortedItems = items.slice().sort((a, b) => Number(a.packed) - Number(b.packed))
 
   return(
-    <div >
+    <div className='content-between'>
       <div className='flex justify-center mt-4'>
         <ul className='flex flex-wrap space-x-8'>
           {sortedItems.map((item) => (
@@ -96,12 +101,17 @@ function PackingList({ items, onDeleteItem, onToggleItem }) {
         </ul>
       </div>
 
-      <div className='text-center mt-28 '>
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className='rounded-md px-2 py-1 bg-slate-200 text-lg'>
+      <div className='flex justify-center text-center mt-4'>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className='rounded-md px-2 py-1 bg-slate-200 text-lg mr-4'>
           <option value="input">Sort by input order</option>
           <option value="description">Sort by description</option>
           <option value="packed">Sort by packed status</option>
         </select>
+
+        &nbsp;
+
+        <button className='ms-3 rounded-md px-3 py-2 bg-red-600 text-white' onClick={onClearList}>Clear List</button>
+
       </div>
 
     </div>
@@ -111,7 +121,7 @@ function PackingList({ items, onDeleteItem, onToggleItem }) {
 
 function Item({ item, onDeleteItem, onToggleItem }) {
   return (
-    <li className='flex items-center space-x-3 backdrop-blur-0 bg-yellow-200/30 px-3 py-3 rounded-xl text-lg mb-3'>
+    <li className='flex items-center space-x-3 backdrop-blur-0 bg-yellow-200/30 px-3 py-3 rounded-xl text-lg mb-3 ms-2'>
       <input type="checkbox" value={item.packed} onChange={() => onToggleItem(item.id)} />
       <span style={item.packed ? {textDecoration: 'line-through'} : {}}>
         {item.quantity} {item.description}
