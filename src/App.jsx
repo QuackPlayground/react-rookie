@@ -25,7 +25,7 @@ export default function App() {
       <Logo />
       <Form onAddItems={handleAddItems} />
       <PackingList items={items} onDeleteItem={handleDeleteItems} onToggleItem={handleToggleItem}/>
-      <Stats />
+      <Stats items={items}/>
     </div>
   )
 }
@@ -41,6 +41,8 @@ function Form({ onAddItems }) {
 
   function handleSubmit(e) {
     e.preventDefault();
+
+    if(!description) return;
 
     const newItem = {description, quantity, packed: false, id:Date.now()}
     console.log(newItem);
@@ -75,7 +77,7 @@ function Form({ onAddItems }) {
 function PackingList({ items, onDeleteItem, onToggleItem }) {
   return(
     <div className='flex justify-center mt-4'>
-      <ul className='flex flex-row space-x-8'>
+      <ul className='flex flex-wrap space-x-8'>
         {items.map((item) => (
           <Item item={item} key={item.id} onDeleteItem={onDeleteItem} onToggleItem={onToggleItem}/>
         ))}
@@ -87,7 +89,7 @@ function PackingList({ items, onDeleteItem, onToggleItem }) {
 
 function Item({ item, onDeleteItem, onToggleItem }) {
   return (
-    <li className='flex items-center space-x-3 backdrop-blur-0 bg-yellow-200/30 px-3 py-3 rounded-xl text-lg'>
+    <li className='flex items-center space-x-3 backdrop-blur-0 bg-yellow-200/30 px-3 py-3 rounded-xl text-lg mb-3'>
       <input type="checkbox" value={item.packed} onChange={() => onToggleItem(item.id)} />
       <span style={item.packed ? {textDecoration: 'line-through'} : {}}>
         {item.quantity} {item.description}
@@ -98,11 +100,18 @@ function Item({ item, onDeleteItem, onToggleItem }) {
 }
 
 
-function Stats() {
+function Stats({ items }) {
+
+  if(!items.length) return <p className='fixed bottom-0 w-full bg-gray-200 text-center p-4 font-semibold text-lg'><em>Start adding some items to your packing list 🚀</em></p>
+
+  const numItems = items.length;
+  const numPacked = items.filter(item => item.packed).length;
+  const percentage = Math.round(numPacked / numItems * 100) 
+
   return (
     <footer className='fixed bottom-0 w-full bg-gray-200 text-center p-4 font-semibold text-lg'>
       <em>
-        💼 You have X items on your list, and you already packed X (X%)
+        { percentage === 100 ? 'You got everything! Ready to go ✈️' : `💼 You have ${numItems} items on your list, and you already packed ${numPacked} ( ${percentage} %)`}
       </em>
     </footer>
   )
