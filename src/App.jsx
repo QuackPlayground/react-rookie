@@ -75,13 +75,35 @@ function Form({ onAddItems }) {
 
 
 function PackingList({ items, onDeleteItem, onToggleItem }) {
+
+  const [sortBy, setSortBy] = useState('input');
+
+  let sortedItems;
+
+  if (sortBy === 'input') sortedItems = items;
+
+  if (sortBy === 'description') sortedItems = items.slice().sort((a, b) => a.description.localeCompare(b.description))
+
+  if (sortBy === 'packed') sortedItems = items.slice().sort((a, b) => Number(a.packed) - Number(b.packed))
+
   return(
-    <div className='flex justify-center mt-4'>
-      <ul className='flex flex-wrap space-x-8'>
-        {items.map((item) => (
-          <Item item={item} key={item.id} onDeleteItem={onDeleteItem} onToggleItem={onToggleItem}/>
-        ))}
-      </ul>
+    <div >
+      <div className='flex justify-center mt-4'>
+        <ul className='flex flex-wrap space-x-8'>
+          {sortedItems.map((item) => (
+            <Item item={item} key={item.id} onDeleteItem={onDeleteItem} onToggleItem={onToggleItem}/>
+          ))}
+        </ul>
+      </div>
+
+      <div className='text-center mt-28 '>
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)} className='rounded-md px-2 py-1 bg-slate-200 text-lg'>
+          <option value="input">Sort by input order</option>
+          <option value="description">Sort by description</option>
+          <option value="packed">Sort by packed status</option>
+        </select>
+      </div>
+
     </div>
   )
 }
