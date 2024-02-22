@@ -47,9 +47,17 @@ const tempWatchedData = [
   },
 ];
 
+const average = (arr) => arr.reduce((acc, cur) => acc + cur / arr.length, 0);
+
+
 export default function App() {
+  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState(tempMovieData);
   const [watched, setWatched] = useState(tempWatchedData);
+
+  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
+  const avgUserRating = average(watched.map((movie) => movie.userRating));
+  const avgRunTime = average(watched.map((movie) => movie.runtime));
 
   return (
     <>
@@ -62,6 +70,8 @@ export default function App() {
           className="search"
           type="text"
           placeholder="Search movies..."
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
         />
         <p className="num-results">
           Found <strong>{movies.length}</strong> results
@@ -107,15 +117,15 @@ export default function App() {
                   </p>
                   <p>
                     <span>⭐️</span>
-                    <span>imdb rating</span>
+                    <span>{avgImdbRating}</span>
                   </p>
                   <p>
                     <span>🌟</span>
-                    <span>user ratingh</span>
+                    <span>{avgUserRating}</span>
                   </p>
                   <p>
                     <span>⏳</span>
-                    <span>XX min</span>
+                    <span>{avgRunTime}</span>
                   </p>
                 </div>
               </div>
