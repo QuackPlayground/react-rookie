@@ -64,6 +64,18 @@ export default function App() {
         <Numresults movies={movies}/>
       </NavBar>
       <Main >
+
+        {/* Passing Elements as props*/}
+        {/* <Box element={<MovieList movies={movies}/>}/>
+        <Box 
+          element={
+            <>
+              <WatchedSummary watched={watched}/>
+              <WatchedMovieList watched={watched}/>
+            </>
+          }
+        /> */}
+
         <Box>
           <MovieList movies={movies}/>
         </Box>
@@ -71,6 +83,7 @@ export default function App() {
           <WatchedSummary watched={watched}/>
           <WatchedMovieList watched={watched}/>  
         </Box>
+
       </Main>
       
     </>
@@ -136,6 +149,7 @@ function Main({ children }) {
 }
 
 // Stateful Component
+// change children to element if u want to passing elements as props
 function Box({ children }) {
 
   const [isOpen, setIsOpen] = useState(true);
