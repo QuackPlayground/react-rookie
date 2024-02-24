@@ -58,21 +58,28 @@ export default function App() {
   return (
     <>
       
-      <NavBar movies={movies}/>
-      <Main movies={movies}/>
+      <NavBar>
+        <Search />
+        <Numresults movies={movies}/>
+      </NavBar>
+      <Main >
+        <ListBox>
+          <MovieList movies={movies}/>
+        </ListBox>
+        <WatchedBox />
+      </Main>
       
     </>
   );
 }
 
 // Structural Component
-function NavBar({ movies }) {
+function NavBar({ children }) {
 
   return(
     <nav className="nav-bar">
       <Logo />
-      <Search />
-      <Numresults movies={movies}/>
+      {children}
     </nav>
   )
 }
@@ -82,7 +89,7 @@ function Logo() {
   return (
     <div className="logo">
       <span role="img">🍿</span>
-      <h1>usePopcorn</h1>
+      <h1>Poepcorn</h1>
     </div>
   )
 }
@@ -113,20 +120,19 @@ function Numresults({ movies }) {
 }
 
 // Structural Component
-function Main({ movies }) {
+function Main({ children }) {
 
   return (
     <main className="main">
       
-      <ListBox movies={movies}/>
-      <WatchedBox />
+      {children}
       
     </main>
   )
 }
 
 // Stateful Component
-function ListBox({ movies }) {
+function ListBox({ children }) {
 
   const [isOpen1, setIsOpen1] = useState(true);
 
@@ -138,9 +144,7 @@ function ListBox({ movies }) {
       >
         {isOpen1 ? "-" : "+"}
       </button>
-        {isOpen1 && (
-          <MovieList movies={movies}/>
-        )}
+        {isOpen1 && children }
     </div>
   )
 }
