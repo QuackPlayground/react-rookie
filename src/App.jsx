@@ -50,7 +50,7 @@ const tempWatchedData = [
 
 const average = (arr) => arr.reduce((acc, cur) => acc + cur / arr.length, 0);
 
-
+//  Structural Component
 export default function App() {
   
   return (
@@ -63,7 +63,7 @@ export default function App() {
   );
 }
 
-
+// Structural Component
 function NavBar() {
 
   return(
@@ -75,6 +75,7 @@ function NavBar() {
   )
 }
 
+// Presentational Component
 function Logo() {
   return (
     <div className="logo">
@@ -84,7 +85,7 @@ function Logo() {
   )
 }
 
-
+// Stateful Component
 function Search() {
 
   const [query, setQuery] = useState("");
@@ -100,6 +101,7 @@ function Search() {
   )
 }
 
+// Presentational Component
 function Numresults() {
   return(
     <p className="num-results">
@@ -108,11 +110,8 @@ function Numresults() {
   )
 }
 
-
+// Structural Component
 function Main() {
-
-  
-  
 
   return (
     <main className="main">
@@ -124,7 +123,7 @@ function Main() {
   )
 }
 
-
+// Stateful Component
 function ListBox() {
 
   const [isOpen1, setIsOpen1] = useState(true);
@@ -144,7 +143,7 @@ function ListBox() {
   )
 }
 
-
+// Stateful Component
 function MovieList() {
   
   const [movies, setMovies] = useState(tempMovieData);
@@ -158,6 +157,7 @@ function MovieList() {
   )
 }
 
+// Presentational Component
 function Movie({ movie }) {
   return (
     <li key={movie.imdbID}>
@@ -173,7 +173,7 @@ function Movie({ movie }) {
   )
 }
 
-
+// Stateful Component
 function WatchedBox() {
   
   const [watched, setWatched] = useState(tempWatchedData);
@@ -201,7 +201,7 @@ function WatchedBox() {
   )
 }
 
-
+// Presentational Component
 function WatchedSummary({ watched }) {
   
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
@@ -234,6 +234,7 @@ function WatchedSummary({ watched }) {
 }
 
 
+// Presentational Component
 function WatchedMovieList({ watched }) {
   
   return (
@@ -246,7 +247,7 @@ function WatchedMovieList({ watched }) {
 
 }
 
-
+// Presentational Component
 function WatchedMovie({ movie }) {
   return (
     <li key={movie.imdbID}>
